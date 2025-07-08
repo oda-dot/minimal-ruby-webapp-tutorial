@@ -5,6 +5,9 @@
 ### 目的
 既存 Todo を編集・削除できるようにし、`Rack::MethodOverride` の仕組みを理解する。
 
+### 成果物
+
+
 ## 作業
 
 ### 1. app.rb に UPDATE & DELETE ルートを追記

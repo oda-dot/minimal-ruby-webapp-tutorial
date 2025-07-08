@@ -5,6 +5,9 @@
 ### 目的
 SQLite3 に Todo テーブルを作成し、ActiveRecord マイグレーションの流れを理解する。
 
+### 成果物
+
+
 ## 作業
 ```bash
 mkdir -p config db/migrate
