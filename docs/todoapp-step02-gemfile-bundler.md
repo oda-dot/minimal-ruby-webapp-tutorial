@@ -25,6 +25,7 @@ cursor Gemfile
 source "https://rubygems.org"
 
 gem "puma"
+gem "rake"
 gem "rackup"
 gem "sinatra"
 gem "sinatra-activerecord"
