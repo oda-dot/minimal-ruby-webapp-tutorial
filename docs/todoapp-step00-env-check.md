@@ -33,7 +33,7 @@ sqlite3 --version
 ```
 期待例: `3.x.x` のバージョン番号。
 
-> エラーが出たら `sudo apt install sqlite3 -y` でインストール。
+> エラーが出たら `sudo apt install sqlite3 libsqlite3-dev -y` でインストール。
 
 
 ### 4. Git を確認

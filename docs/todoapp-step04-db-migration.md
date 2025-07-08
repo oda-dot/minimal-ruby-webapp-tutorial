@@ -1,6 +1,8 @@
 # todoapp Step 04 DB 設定 & マイグレーション
 
-## 目的
+## 目的と成果物
+
+### 目的
 SQLite3 に Todo テーブルを作成し、ActiveRecord マイグレーションの流れを理解する。
 
 ## 作業
@@ -8,11 +10,11 @@ SQLite3 に Todo テーブルを作成し、ActiveRecord マイグレーショ�
 mkdir -p config db/migrate
 
 touch config/database.yml
-code  config/database.yml   # VS Code で開き、下記内容を貼り付けて保存
+cursor  config/database.yml   # VS Code で開き、下記内容を貼り付けて保存
 
 # Rakefile を作成 (ActiveRecord 用タスクを読み込む)
 touch Rakefile
-code  Rakefile              # VS Code で開き、下記内容を貼り付けて保存
+cursor  Rakefile              # VS Code で開き、下記内容を貼り付けて保存
 
 # マイグレーション生成
 bundle exec rake db:create_migration NAME=create_todos

@@ -1,6 +1,8 @@
 # todoapp Step 10 GitHub 連携（git remote & push）
 
-## 目的
+## 目的と成果物
+
+### 目的
 ローカルリポジトリを GitHub に公開し、共有・バックアップできるようにする。
 
 ## 作業

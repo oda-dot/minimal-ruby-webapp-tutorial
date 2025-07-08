@@ -1,13 +1,15 @@
 # todoapp Step 09 自動リロード導入
 
-## 目的
+## 目的と成果物
+
+### 目的
 コード変更時にサーバーを手動再起動せずに済むようにする。
 
 ## 作業
 ### 1. sinatra/reloader を有効化（推奨）
 ```bash
 # Gemfile ですでに sinatra-contrib を入れている想定
-code app.rb   # 先頭付近に下行を追加して保存
+cursor app.rb   # 先頭付近に下行を追加して保存
 ```
 ```ruby
 require "sinatra/reloader" if development?

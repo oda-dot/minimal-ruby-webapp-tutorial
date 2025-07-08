@@ -1,18 +1,20 @@
 # todoapp Step 07 CREATE 機能
 
-## 目的
+## 目的と成果物
+
+### 目的
 フォームから Todo を新規登録できるようにする。
 
 ## 作業
 ### 1. app.rb に CREATE ルートを追記
 ```bash
-code app.rb   # 既存ファイルを開き、末尾にコード例を貼り付け
+cursor app.rb   # 既存ファイルを開き、末尾にコード例を貼り付け
 ```
 
 ### 2. new.erb ビューを作成
 ```bash
 touch views/new.erb
-code views/new.erb
+cursor views/new.erb
 ```
 > 下の「views/new.erb 例」をコピーして保存。
 

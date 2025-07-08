@@ -1,24 +1,24 @@
 # todoapp Step 02 Gemfile & Bundler
 
-## 目的
+## 目的と成果物
+
+### 目的
 Gemfile で必要ライブラリを宣言し、Bundler で一括インストールする。
+
+### 成果物
+
+.bundle/*　（自動生成）
+Gemfile
+Gemfile.lock（自動生成）
+vendor/bundler/*（自動生成）
 
 ## 作業
 ### 1. Gemfile を作成して VS Code で開く
 ```bash
 touch Gemfile
-code Gemfile
+cursor Gemfile
 ```
 > 直後に下の「Gemfile 例」をコピーして保存してください。
-
----
-
-### 2. 依存ライブラリをインストール
-```bash
-bundle install --path vendor/bundle
-```
-`vendor/bundle/` に Gem がダウンロードされれば完了です。
----
 
 ### Gemfile 例
 ```ruby
@@ -29,6 +29,17 @@ gem "sinatra-activerecord"
 gem "sqlite3"
 gem "sinatra-contrib"   # reloader を含む
 ```
+
+---
+
+### 2. 依存ライブラリをインストール
+```bash
+bundle install --path vendor/bundle
+```
+`vendor/bundle/` に Gem がダウンロードされれば完了です。
+---
+
+
 
 ### Gemfile を分解してみよう
 | 行 | 役割 | 意味 |
@@ -59,7 +70,7 @@ gem "sinatra-contrib"   # reloader を含む
 
 
 ## 動作確認
-`bundle exec ruby -e 'puts :ok'` が `ok` を表示すれば実行環境 OK。
+`bundle exec ruby -e 'puts :Ruby実行準備完了！'` が `Ruby実行準備完了！` を表示すれば実行環境 OK。
 
 ## Commit Point 🚩
 ```bash
@@ -80,4 +91,8 @@ git commit -m "STEP02: add Gemfile and install dependencies"
 AI への質問例
 ```
 Gemfile と Gemfile.lock の役割の違いを初心者向けに説明してください。
+
+bundle install --path vendor/bundle のpathオプションは必須でしょうか？
+
+bundle exec ruby -e 'puts :Ruby実行準備完了！'　はどういう意味ですか？
 ``` 

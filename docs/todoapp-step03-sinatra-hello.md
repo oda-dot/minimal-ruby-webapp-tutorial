@@ -1,13 +1,15 @@
 # todoapp Step 03 Sinatra "Hello"
 
-## 目的
+## 目的と成果物
+
+### 目的
 Sinatra が起動し、ブラウザに文字列を表示できることを確認する。
 
 ## 作業
 ### 1. config.ru を作成して VS Code で開く
 ```bash
 touch config.ru
-code config.ru
+cursor config.ru
 ```
 > 以下の「config.ru 例」を貼り付けて保存。
 

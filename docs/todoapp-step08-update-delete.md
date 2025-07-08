@@ -1,25 +1,27 @@
 # todoapp Step 08 UPDATE & DELETE 機能
 
-## 目的
+## 目的と成果物
+
+### 目的
 既存 Todo を編集・削除できるようにし、`Rack::MethodOverride` の仕組みを理解する。
 
 ## 作業
 
 ### 1. app.rb に UPDATE & DELETE ルートを追記
 ```bash
-code app.rb   # ファイルを開き、コード例を貼り付けて保存
+cursor app.rb   # ファイルを開き、コード例を貼り付けて保存
 ```
 
 ### 2. edit.erb ビューを新規作成
 ```bash
 mkdir -p views        # 未作成なら
 touch views/edit.erb
-code views/edit.erb   # コード例を保存
+cursor views/edit.erb   # コード例を保存
 ```
 
 ### 3. index.erb を更新し Edit / Delete ボタンを追加
 ```bash
-code views/index.erb  # コード例を貼り付けて保存
+cursor views/index.erb  # コード例を貼り付けて保存
 ```
 
 ### app.rb 追記例

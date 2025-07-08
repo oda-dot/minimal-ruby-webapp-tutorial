@@ -1,6 +1,8 @@
 # todoapp Step 06 READ ルート + ビュー
 
-## 目的
+## 目的と成果物
+
+### 目的
 一覧ページを作成し、DB のレコードをブラウザに表示する。
 
 ## 作業
@@ -8,15 +10,15 @@
 # app.rb を作成
 
 touch app.rb
-code app.rb   # VS Code で開き、下記内容を貼り付けて保存
+cursor app.rb   # VS Code で開き、下記内容を貼り付けて保存
 
 mkdir -p views
 
 touch views/index.erb
-code views/index.erb   # VS Code で開き、下記内容を貼り付けて保存
+cursor views/index.erb   # VS Code で開き、下記内容を貼り付けて保存
 
 # config.ru を上書きして app.rb をロード
-code config.ru   # VS Code で開き、下記内容を貼り付けて保存
+cursor config.ru   # VS Code で開き、下記内容を貼り付けて保存
 ```
 
 ### app.rb 例

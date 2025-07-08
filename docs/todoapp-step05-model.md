@@ -1,6 +1,8 @@
 # todoapp Step 05 モデル実装
 
-## 目的
+## 目的と成果物
+
+### 目的
 ActiveRecord モデル `Todo` を作成し、バリデーションを学ぶ。
 
 ## 作業
@@ -14,7 +16,7 @@ mkdir -p models
 ### 2. Todo モデルを作成して VS Code で開く
 ```bash
 touch models/todo.rb
-code models/todo.rb
+cursor models/todo.rb
 ```
 > 以下の「models/todo.rb 例」をコピーして保存。
 
