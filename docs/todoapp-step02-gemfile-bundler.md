@@ -62,6 +62,7 @@ bundle install --path vendor/bundle
 - **Gem**: Ruby のライブラリパッケージ。Python の pip に相当。
 - **依存関係 (dependency)**: ライブラリが他のライブラリを必要とする関係。解決を dependency resolution と呼ぶ。
 - **vendor/bundle**: プロジェクトローカルに Gem を置く慣習的ディレクトリ。
+- **bundle exec**: プロジェクトの Gemfile で指定したバージョンの Gem を使ってコマンドを実行する。
 
 ### インストールした Gem の目的
 | Gem | 役割 |

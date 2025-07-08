@@ -39,6 +39,7 @@ end
 ### 用語メモ
 - **モデル (Model)**: アプリケーションのデータとビジネスロジックを表す層。
 - **バリデーション (validation)**: レコード保存前に値が正しいかを検証する仕組み。
+- **irb**: Interactive Ruby。Ruby コードを1行ずつ試せる対話型実行環境。
 - 
 ### models/todo.rb を分解してみよう
 - `class Todo < ActiveRecord::Base` : `todos` テーブルとつながる **Ruby の設計図** を宣言。

@@ -39,6 +39,8 @@ bundle exec rackup -p 4567
 
 ### 用語メモ
 - **Rack**: Ruby Web サーバーインターフェースの標準仕様。Sinatra/Rails などは Rack アプリ。
+- **config.ru**: Rack アプリケーションの起動設定ファイル。どのアプリを動かすかを指定。
+- **rackup**: config.ru ファイルを読み込んで Rack アプリケーションを起動するコマンド。
 - **ポート (port)**: ネットワークでプロセスを識別する番号。本手順では 4567 を使用。
 
 ### config.ru を分解してみよう

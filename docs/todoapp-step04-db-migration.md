@@ -95,6 +95,7 @@ bundle exec rake db:migrate
 - sinatra-activerecord は自動的に config/database.yml を読み取って DB に接続する。
 
 ### 用語メモ
+- **rake**: Ruby で書かれたタスク実行ツール。make の Ruby 版。
 - **マイグレーション (migration)**: スキーマ変更履歴を Ruby DSL で管理する仕組み。
 - **スキーマ (schema)**: テーブル定義 (列名・型・制約) の集合。
 - **DSL**: Domain Specific Language。特定領域に特化した記述方式。
