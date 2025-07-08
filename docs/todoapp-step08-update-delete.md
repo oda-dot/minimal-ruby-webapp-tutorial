@@ -6,6 +6,9 @@
 既存 Todo を編集・削除できるようにし、`Rack::MethodOverride` の仕組みを理解する。
 
 ### 成果物
+views/edit.erb
+views/index.erb (更新)
+app.rb (更新)
 
 
 ## 作業

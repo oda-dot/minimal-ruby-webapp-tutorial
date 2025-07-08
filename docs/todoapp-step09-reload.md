@@ -6,6 +6,7 @@
 コード変更時にサーバーを手動再起動せずに済むようにする。
 
 ### 成果物
+app.rb (更新)
 
 
 ## 作業
@@ -44,7 +45,7 @@ bundle exec rerun -- rackup -p 4567
 
 ## Commit Point 🚩
 ```bash
-git add Gemfile app.rb
+git add app.rb
 git commit -m "STEP09: enable auto reload via sinatra/reloader"
 ```
 
