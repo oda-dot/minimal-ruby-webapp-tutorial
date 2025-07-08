@@ -39,7 +39,7 @@ require_relative "./app"
 run Sinatra::Application
 ```
 
-### 3. 一度実行してエラーを確認
+### 3. 一度実行してエラーを確認（その1）
 ```bash
 bundle exec rackup
 ```
@@ -47,7 +47,7 @@ bundle exec rackup
 
 期待するエラー: `NameError: uninitialized constant Todo`
 
-### 4. エラーの原因を理解して修正
+### 4. エラーの原因を理解して修正（その1）
 エラーの意味: `Todo` クラスが見つからない
 → models/todo.rb を読み込んでいないため
 
@@ -67,20 +67,19 @@ get "/" do
 end
 ```
 
-### 5. Step 05 のモデルを Web アプリ用に調整
+### 5. 再度実行してエラーを確認（その2）
 ```bash
-cursor models/todo.rb   # VS Code で開き、require 文を削除して保存
+bundle exec rackup
 ```
+ブラウザで `http://localhost:4567` にアクセスすると **新しいエラーが発生** します。
 
-### models/todo.rb 例 (require 文を削除)
-```ruby
-class Todo < ActiveRecord::Base
-  validates :title, presence: true
-end
-```
-> **なぜ削除？**: app.rb で先に `require "sinatra/activerecord"` して、その後に `require_relative "models/todo"` で読み込むため。読み込まれる時点で ActiveRecord は既に使える状態になっています。
+期待するエラー: `Errno::ENOENT: No such file or directory @ rb_sysopen - /path/to/views/index.erb`
 
-### 6. ビュー用ディレクトリとindex.erbを作成
+### 6. エラーの原因を理解して修正（その2）
+エラーの意味: `views/index.erb` ファイルが見つからない
+→ ビューファイルをまだ作成していないため
+
+### 7. ビュー用ディレクトリとindex.erbを作成
 ```bash
 mkdir -p views
 
@@ -93,24 +92,38 @@ cursor views/index.erb   # VS Code で開き、下記内容を貼り付けて保
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   <title>Todo List</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
 </head>
-<body class="p-4">
+<body>
   <h1>Todos</h1>
-  <a href="/todos/new" class="btn btn-primary mb-3">New</a>
-  <table class="table">
+  <a href="/todos/new">新規作成</a>
+  <table>
     <% @todos.each do |todo| %>
       <tr>
         <td><%= todo.title %></td>
-        <td><%= todo.done ? "✅" : "❌" %></td>
+        <td><%= todo.done ? "完了" : "未完了" %></td>
       </tr>
     <% end %>
   </table>
 </body>
 </html>
 ```
+
+もう一度、`bundle exec rackup`するとエラーが消えているはずです。
+
+### 8. Step 05 のモデルを Web アプリ用に調整
+```bash
+cursor models/todo.rb   # VS Code で開き、require 文を削除して保存
+```
+
+### models/todo.rb 例 (require 文を削除)
+```ruby
+class Todo < ActiveRecord::Base
+  validates :title, presence: true
+end
+```
+> **なぜ削除？**: app.rb で先に `require "sinatra/activerecord"` して、その後に `require_relative "models/todo"` で読み込むため。読み込まれる時点で ActiveRecord は既に使える状態になっています。
 
  
 
@@ -128,10 +141,18 @@ cursor views/index.erb   # VS Code で開き、下記内容を貼り付けて保
 
 
 ### エラー駆動学習のポイント
-- **エラーメッセージを読む習慣**: `uninitialized constant` = 「定義されていない定数」
-- **原因の推測**: Todo クラスが見つからない → ファイルが読み込まれていない
-- **解決方法の検索**: require と require_relative の違いを調べる
-- **依存関係の理解**: app.rb で ActiveRecord を読み込むため、models では不要になる
+- **エラーメッセージを読む習慣**:
+  - `uninitialized constant` = 「定義されていない定数」
+  - `No such file or directory` = 「ファイルが見つからない」
+- **原因の推測**:
+  - Todo クラスが見つからない → ファイルが読み込まれていない
+  - index.erb が見つからない → ビューファイルがまだ存在しない
+- **解決方法の検索**:
+  - require と require_relative の違いを調べる
+  - Sinatra のビューの配置場所を確認する
+- **依存関係の理解**:
+  - app.rb で ActiveRecord を読み込むため、models では不要になる
+  - Sinatra は views ディレクトリ内のビューファイルを探す
 
 ### app.rb を分解してみよう
 | 行 | 説明 |
@@ -161,7 +182,7 @@ cursor views/index.erb   # VS Code で開き、下記内容を貼り付けて保
 ### views/index.erb を分解してみよう
 - `<% @todos.each do |todo| %>` : Ruby でループ開始。
 - `<%= todo.title %>` : 変数を **表示(=)** する。
-- `✅ / ❌` : 完了フラグをアイコンで表現。
+- `<%= todo.done ? "完了" : "未完了" %>` : doneフラグによって表示分け。
 
 ## 動作確認
 `bundle exec rackup` → ブラウザに Todo 一覧が表示される。
