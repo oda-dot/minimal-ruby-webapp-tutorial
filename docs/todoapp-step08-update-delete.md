@@ -10,24 +10,11 @@ views/edit.erb
 views/index.erb (更新)
 app.rb (更新)
 
-
 ## 作業
 
 ### 1. app.rb に UPDATE & DELETE ルートを追記
 ```bash
 cursor app.rb   # ファイルを開き、コード例を貼り付けて保存
-```
-
-### 2. edit.erb ビューを新規作成
-```bash
-mkdir -p views        # 未作成なら
-touch views/edit.erb
-cursor views/edit.erb   # コード例を保存
-```
-
-### 3. index.erb を更新し Edit / Delete ボタンを追加
-```bash
-cursor views/index.erb  # コード例を貼り付けて保存
 ```
 
 ### app.rb 追記例
@@ -56,60 +43,61 @@ delete "/todos/:id" do
 end
 ```
 
+### 2. edit.erb ビューを新規作成
+```bash
+touch views/edit.erb
+cursor views/edit.erb   # コード例を保存
+```
+
 ### views/edit.erb 例
 ```erb
 <!DOCTYPE html>
 <html>
-<head><meta charset="utf-8" /><title>Edit Todo</title></head>
-<body class="p-4">
-  <h1>Edit Todo</h1>
+<head>
+  <meta charset="utf-8">
+  <title>Todo編集</title>
+</head>
+<body>
+  <h1>Todo編集</h1>
   <form action="/todos/<%= @todo.id %>" method="post">
-    <input type="hidden" name="_method" value="patch" />
+    <input type="hidden" name="_method" value="patch">
     <div>
-      <label>Title</label>
-      <input type="text" name="todo[title]" value="<%= @todo.title %>" />
+      <label for="title">タイトル</label>
+      <input type="text" name="title" id="title" value="<%= @todo.title %>">
     </div>
     <div>
-      <label>Description</label>
-      <textarea name="todo[description]"><%= @todo.description %></textarea>
+      <label>
+        <input type="checkbox" name="done" <%= @todo.done ? 'checked' : '' %>>
+        完了
+      </label>
     </div>
     <div>
-      <label>Done</label>
-      <input type="checkbox" name="todo[done]" <%= "checked" if @todo.done %> />
+      <button type="submit">更新</button>
+      <a href="/">戻る</a>
     </div>
-    <button class="btn btn-primary">Update</button>
   </form>
 </body>
 </html>
 ```
 
+### 3. index.erb を更新し Edit / Delete ボタンを追加
+```bash
+cursor views/index.erb  # コード例を貼り付けて保存
+```
+
 ### views/index.erb (更新)
 ```erb
-<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8" /><title>Todo List</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
-</head>
-<body class="p-4">
-  <h1>Todos</h1>
-  <a href="/todos/new" class="btn btn-primary mb-3">New</a>
-  <table class="table">
-    <% @todos.each do |todo| %>
-      <tr>
-        <td><%= todo.title %></td>
-        <td><%= todo.done ? "✅" : "❌" %></td>
-        <td>
-          <a href="/todos/<%= todo.id %>/edit" class="btn btn-sm btn-secondary">Edit</a>
-          <form action="/todos/<%= todo.id %>" method="post" style="display:inline;">
-            <input type="hidden" name="_method" value="delete" />
-            <button class="btn btn-sm btn-danger">Delete</button>
-          </form>
-        </td>
-      </tr>
-    <% end %>
-  </table>
-</body>
-</html>
+<tr>
+  <td><%= todo.title %></td>
+  <td><%= todo.done ? "完了" : "未完了" %></td>
+  <td>
+    <a href="/todos/<%= todo.id %>/edit">編集</a>
+    <form action="/todos/<%= todo.id %>" method="post" style="display: inline">
+      <input type="hidden" name="_method" value="delete">
+      <button type="submit">削除</button>
+    </form>
+  </td>
+</tr>
 ```
 
 ## ポイント解説
@@ -127,8 +115,20 @@ end
 - `delete "/todos/:id"` : 削除。
 
 ### views/edit.erb を分解してみよう
-- `<input type="hidden" name="_method" value="patch" />` : 本当は PATCH を送りたい合図。
-- チェックボックス `todo[done]` : true/false を DB の boolean に保存。 
+- `<input type="hidden" name="_method" value="patch" />` : 本当は 
+PATCH を送りたい合図。
+- チェックボックス `todo[done]` : true/false を DB の boolean に保
+存。 
+
+### 既存データの表示
+- `value="<%= @todo.title %>"` で現在の値を表示
+- `<%= @todo.done ? 'checked' : '' %>` で状態を反映
+
+### 動作確認のポイント
+1. [ ] 編集リンクをクリックして現在の値が表示される
+2. [ ] 値を変更して更新ボタンを押すと反映される
+3. [ ] 削除ボタンを押すとレコードが消える
+4. [ ] タイトルを空にして更新するとエラーになる
 
 
 ## 動作確認
@@ -142,6 +142,9 @@ git commit -m "STEP08: add update & delete actions with method_override"
 
 ## 理解チェック
 - [ ] `Rack::MethodOverride` の役割を説明できる
+- [ ] HTTPメソッドの使い分けを説明できる
+- [ ] 異なる種類のパラメータを説明できる
+- [ ] フォームの再利用方法を説明できる
 
 ## もっと詳しく
 
@@ -152,4 +155,6 @@ git commit -m "STEP08: add update & delete actions with method_override"
 AI への質問例
 ```
 HTML フォームが GET と POST しか送れないのはなぜですか？
+
+削除する前に確認ダイアログを表示するにはどうすればいいですか？
 ```

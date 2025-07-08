@@ -6,8 +6,8 @@
 フォームから Todo を新規登録できるようにする。
 
 ### 成果物
-views/new.erb
-app.rb (更新)
+- views/new.erb (新規)
+- app.rb (更新)
 
 
 ## 作業
@@ -16,15 +16,9 @@ app.rb (更新)
 cursor app.rb   # 既存ファイルを開き、末尾にコード例を貼り付け
 ```
 
-### 2. new.erb ビューを作成
-```bash
-touch views/new.erb
-cursor views/new.erb
-```
-> 下の「views/new.erb 例」をコピーして保存。
-
-### app.rb 追記例
 ```ruby
+# ...省略
+
 get "/todos/new" do
   @todo = Todo.new
   erb :new
@@ -38,42 +32,59 @@ post "/todos" do
     erb :new
   end
 end
+
 ```
 
-### views/new.erb 例
+### 2. views/new.erb を作成
+```bash
+touch views/new.erb
+cursor views/new.erb   # VS Code で開き、下記内容を貼り付けて保存
+```
+
 ```erb
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <title>New Todo</title>
+  <meta charset="utf-8">
+  <title>新規Todo作成</title>
 </head>
-<body class="p-4">
-  <h1>New Todo</h1>
+<body>
+  <h1>新規Todo作成</h1>
   <form action="/todos" method="post">
     <div>
-      <label>Title</label>
-      <input type="text" name="todo[title]" />
+      <label for="title">タイトル</label>
+      <input type="text" name="todo[title]" id="title">
     </div>
     <div>
-      <label>Description</label>
-      <textarea name="todo[description]"></textarea>
+      <label>
+        <input type="checkbox" name="todo[done]">
+        完了
+      </label>
     </div>
-    <button class="btn btn-primary">Create</button>
+    <div>
+      <button type="submit">作成</button>
+      <a href="/">戻る</a>
+    </div>
   </form>
 </body>
 </html>
-``` 
+```
 
 
 ## ポイント解説
 - `params[:todo]` はネストされたハッシュで受け取れる。
-- バリデーションエラー時の再表示パターンを学ぶ。
 
 ### 用語メモ
-- **フォーム (HTML form)**: ブラウザからサーバーへデータを送信する UI。
-- **リダイレクト (redirect)**: サーバーがクライアントに別 URL へ移動するよう指示する応答。
+- **フォーム (HTML form)**: ブラウザからサーバーへデータを送信する 
+UI。
+- **リダイレクト (redirect)**: サーバーがクライアントに別 URL へ移動す
+るよう指示する応答。
 
+### フォームの基本
+- `<form>` の `action` 属性：投稿先のURL
+- `<form>` の `method` 属性：HTTPメソッド（post）
+- `<input>` の `name` 属性：パラメータのキー名
+- `<label>` の `for` 属性：対応する入力要素のid
 
 ### app.rb 追記を分解してみよう
 - `get "/todos/new"` : 新規作成フォームを表示。
@@ -87,7 +98,13 @@ end
 
 
 ## 動作確認
-フォーム送信で一覧に追加されれば成功。
+
+`bundle exec rackup`でサーバーを起動し、ブラウザで確認
+
+1. [ ] 新規作成リンクをクリックしてフォームを表示
+2. [ ] タイトルを入力して作成ボタンを押す
+3. [ ] 一覧に戻り、新しいTodoが表示される
+4. [ ] タイトルを空にして作成すると一覧に戻らない、作成されない
 
 ## Commit Point 🚩
 ```bash
@@ -97,7 +114,9 @@ git commit -m "STEP07: implement create action & form"
 
 ## 理解チェック
 - [ ] `params` の構造を説明できる
-
+- [ ] フォームのHTMLを説明できる
+- [ ] パラメータの受け取り方を説明できる
+- [ ] リダイレクトの使い方を説明できる
 
 ## もっと詳しく
 
@@ -107,5 +126,7 @@ git commit -m "STEP07: implement create action & form"
 
 AI への質問例
 ```
-リダイレクトを行うとブラウザ側では何が起こりますか？
+バリデーションエラー時に、入力した値を残すにはどうすればいいですか？
+
+バリデーションエラー時にエラーをユーザーに伝えるにはどうすればよいですか？
 ```
