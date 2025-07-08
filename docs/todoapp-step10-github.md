@@ -31,31 +31,12 @@ git push -u origin main
 - `remote` はリモート URL のニックネーム。
 - `-u` で上流ブランチを関連付け、以降 `git push` だけで OK。
 
-## 動作確認
-GitHub のリポジトリページでファイル一覧が見えれば成功。
-
-## 理解チェック
-- [ ] remote と branch の関係を説明できる
-
-## もっと詳しく
-### 公式ドキュメント
-- GitHub Docs: https://docs.github.com/ja/get-started/quickstart
-
-### 検索キーワード例
-```
-git remote add origin existing project
-fatal remote origin already exists
-```
-
-### AI への質問テンプレ
-```
-`git push` で "repository not found" エラーになります。
-リモート URL と権限設定を確認する方法を教えてください。
-```
-
 ### 用語メモ
 - **remote**: ローカルリポジトリが参照するリモート先 URL のエントリ。
 - **origin**: 慣習的に最初のリモートに付ける名前。
+
+## 動作確認
+GitHub のリポジトリページでファイル一覧が見えれば成功。
 
 ## Commit Point 🚩
 ```bash
@@ -63,14 +44,12 @@ git add .gitignore
 git commit -m "STEP10: push project to GitHub"
 ```
 
-### 自分でやってみよう
-- GitHub 上で README を直接編集し、その変更を `git pull` で取り込んでみましょう。
-- `git remote -v` で設定内容を確認し、HTTPS → SSH へ変更してみましょう。
+## 理解チェック
+- [ ] remote と branch の関係を説明できる
 
-### 完成コード例
-Git 操作のためコード変化はありません。 
+## もっと詳しく
 
-### 深く理解するために
+- GitHub Docs: https://docs.github.com/ja/get-started/quickstart
 - `remote` と `branch` の基本用語
 - GitHub に Push する流れ（図解記事）
 

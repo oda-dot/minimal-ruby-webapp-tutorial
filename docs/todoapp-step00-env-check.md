@@ -88,7 +88,7 @@ git config --global user.email "you@example.com"
 - SQLite の特徴をざっくり解説: https://www.sqlite.org/whentouse.html
 - Git 超入門（コミットとブランチの基本）: https://backlog.com/ja/git-tutorial/
 
-AI への質問例（学習深掘り）
+AI への質問例
 ```
 Git のブランチとは何ですか？図を使って簡単に説明してください。
 ```

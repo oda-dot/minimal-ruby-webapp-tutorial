@@ -44,45 +44,10 @@ gem "sinatra-contrib"   # reloader を含む
 - `bundle install` は Gem の依存関係を解決し `vendor/bundle` にインストール。
 - `--path` でプロジェクトローカルに閉じ込める。
 
-## 動作確認
-`bundle exec ruby -e 'puts :ok'` が `ok` を表示すれば実行環境 OK。
-
-## 理解チェック
-- [ ] Gemfile と `gem install` の違いを説明できる
-
-## もっと詳しく
-### 公式ドキュメント
-- Bundler: https://bundler.io/
-
-### 検索キーワード例
-```
-bundle install --path vendor/bundle meaning
-Gemfile vs gemspec difference
-```
-
-### AI への質問テンプレ
-```
-`bundle install` で `sqlite3` の native extension ビルドに失敗しました。
-エラーログを添付するので解決策を教えてください。
-```
-
 ### 用語メモ
 - **Gem**: Ruby のライブラリパッケージ。Python の pip に相当。
 - **依存関係 (dependency)**: ライブラリが他のライブラリを必要とする関係。解決を dependency resolution と呼ぶ。
 - **vendor/bundle**: プロジェクトローカルに Gem を置く慣習的ディレクトリ。
-
-## Commit Point 🚩
-```bash
-git add Gemfile Gemfile.lock
-git commit -m "STEP02: add Gemfile and install dependencies"
-```
-
-### 自分でやってみよう
-1. Gemfile に `pry` を追加し再度 `bundle install` してみて、lock ファイルの差分を確認してみましょう。
-2. `bundle exec` を付けた場合と付けない場合の違いを実験してみましょう。
-
-### 完成コード例
-Gemfile の最終形は docs/todoapp-final-code.md を参照してください。
 
 ### インストールした Gem の目的
 | Gem | 役割 |
@@ -92,7 +57,22 @@ Gemfile の最終形は docs/todoapp-final-code.md を参照してください�
 | sqlite3 | SQLite DB の Ruby バインディング |
 | sinatra-contrib | `sinatra/reloader` など便利機能を一括提供 |
 
-### 深く理解するために
+
+## 動作確認
+`bundle exec ruby -e 'puts :ok'` が `ok` を表示すれば実行環境 OK。
+
+## Commit Point 🚩
+```bash
+git add Gemfile Gemfile.lock
+git commit -m "STEP02: add Gemfile and install dependencies"
+```
+
+## 理解チェック
+- [ ] Gemfile と `gem install` の違いを説明できる
+
+## もっと詳しく
+
+- Bundler: https://bundler.io/
 - Sinatra 入門ガイド（公式）: https://sinatrarb.com/intro.html
 - Bundler クイックスタート: https://bundler.io/v2.4/#getting-started
 - SQLite を使う理由（ブログ記事）: https://zenn.dev/
