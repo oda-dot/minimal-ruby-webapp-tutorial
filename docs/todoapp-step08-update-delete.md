@@ -19,9 +19,11 @@ cursor app.rb   # ファイルを開き、コード例を貼り付けて保存
 
 ### app.rb 追記例
 ```ruby
-# Rack::MethodOverride を有効化
+# Rack::MethodOverride を有効化（sinatraのrequire文の後に記述）
 enable :method_override
 use Rack::MethodOverride
+
+# get～post "/todos" do（省略）
 
 get "/todos/:id/edit" do
   @todo = Todo.find(params[:id])
@@ -63,13 +65,11 @@ cursor views/edit.erb   # コード例を保存
     <input type="hidden" name="_method" value="patch">
     <div>
       <label for="title">タイトル</label>
-      <input type="text" name="title" id="title" value="<%= @todo.title %>">
+      <input type="text" name="todo[title]" id="title" value="<%= @todo.title %>">
     </div>
     <div>
-      <label>
-        <input type="checkbox" name="done" <%= @todo.done ? 'checked' : '' %>>
-        完了
-      </label>
+      <label>完了</label>
+        <input type="checkbox" name="todo[done]" <%= "checked" if @todo.done %> />
     </div>
     <div>
       <button type="submit">更新</button>
@@ -82,7 +82,7 @@ cursor views/edit.erb   # コード例を保存
 
 ### 3. index.erb を更新し Edit / Delete ボタンを追加
 ```bash
-cursor views/index.erb  # コード例を貼り付けて保存
+cursor views/index.erb  # <tr>~</tr>の部分をコード例に置き換えて保存
 ```
 
 ### views/index.erb (更新)
@@ -122,7 +122,7 @@ PATCH を送りたい合図。
 
 ### 既存データの表示
 - `value="<%= @todo.title %>"` で現在の値を表示
-- `<%= @todo.done ? 'checked' : '' %>` で状態を反映
+- `<%= @todo.done %>` で状態を反映
 
 ### 動作確認のポイント
 1. [ ] 編集リンクをクリックして現在の値が表示される
@@ -157,4 +157,6 @@ AI への質問例
 HTML フォームが GET と POST しか送れないのはなぜですか？
 
 削除する前に確認ダイアログを表示するにはどうすればいいですか？
+
+Rack::MethodOverrideの有効化をsinatraのrequire文の後に記述するのはなぜですか？
 ```
