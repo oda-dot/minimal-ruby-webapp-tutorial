@@ -6,7 +6,7 @@
 ActiveRecord モデル `Todo` を作成し、バリデーションを学ぶ。
 
 ### 成果物
-
+models/todo.rb
 
 ## 作業
 ### 1. モデル用ディレクトリを用意
@@ -25,10 +25,12 @@ cursor models/todo.rb
 
 ### models/todo.rb 例
 ```ruby
+require "sinatra/activerecord"
+
 class Todo < ActiveRecord::Base
   validates :title, presence: true
 end
-``` 
+```
 
 ## ポイント解説
 - モデルはテーブルと 1:1 対応（慣例で単数形）。
