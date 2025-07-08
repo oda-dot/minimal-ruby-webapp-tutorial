@@ -6,7 +6,7 @@
 Sinatra が起動し、ブラウザに文字列を表示できることを確認する。
 
 ### 成果物
-
+config.ru
 
 ## 作業
 ### 1. config.ru を作成して VS Code で開く
@@ -16,21 +16,22 @@ cursor config.ru
 ```
 > 以下の「config.ru 例」を貼り付けて保存。
 
+### config.ru 例
+```ruby
+require "sinatra"
+run ->(env) { [200, {"content-type" => "text/plain"}, ["Hello Sinatra !"]] }
+```
+
 ---
 
 ### 2. サーバーを起動
 ```bash
 bundle exec rackup -p 4567
 ```
-ターミナルにアクセスログが流れ、ブラウザで `http://localhost:4567` が表示できれば OK。
----
 
-### config.ru 例
-```ruby
-require "sinatra"
-run ->(env) { [200, {"Content-Type" => "text/plain"}, ["Hello Sinatra"]] }
-```
-ブラウザで `http://localhost:4567` を開き "Hello Sinatra" が表示される。
+- サーバーの終了は Ctrl + C
+
+---
 
 ## ポイント解説
 - Rack は Ruby Web サーバーインターフェース。Sinatra は Rack アプリ。
@@ -44,14 +45,14 @@ run ->(env) { [200, {"Content-Type" => "text/plain"}, ["Hello Sinatra"]] }
 - `require "sinatra"` : Sinatra ライブラリを読み込む合図。
 - `run ->(env) { ... }` : Rack に "このブロックを Web アプリとして動かして" と渡す。
   - `env` : リクエスト情報が入ったハッシュ。
-  - `[200, {"Content-Type" => "text/plain"}, ["Hello Sinatra"]]` : **配列 3 つセット** が Rack の取り決め。
+  - `[200, {"content-type" => "text/plain"}, ["Hello Sinatra !"]]` : **配列 3 つセット** が Rack の取り決め。
     - `200` : 成功を示す番号。
-    - `Content-Type` : ブラウザへ返すデータ種別。ここではプレーンテキスト。
+    - `content-type` : ブラウザへ返すデータ種別。ここではプレーンテキスト。
     - `body` : 表示文字列を配列で包む。
 
 ## 動作確認
-ターミナルにアクセスログが出れば成功。
-
+ターミナルにアクセスログが流れ、ブラウザで `http://localhost:4567` が表示される
+ブラウザで `http://localhost:4567` を開き "Hello Sinatra" が表示される。
 
 ## Commit Point 🚩
 ```bash

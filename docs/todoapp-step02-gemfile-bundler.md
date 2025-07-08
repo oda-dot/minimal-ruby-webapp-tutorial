@@ -24,6 +24,8 @@ cursor Gemfile
 ```ruby
 source "https://rubygems.org"
 
+gem "puma"
+gem "rackup"
 gem "sinatra"
 gem "sinatra-activerecord"
 gem "sqlite3"
