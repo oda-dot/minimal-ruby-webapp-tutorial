@@ -30,7 +30,7 @@ gem "rackup"
 gem "sinatra"
 gem "sinatra-activerecord"
 gem "sqlite3"
-gem "sinatra-contrib"   # reloader を含む
+
 ```
 
 ---
@@ -51,7 +51,6 @@ bundle install --path vendor/bundle
 | `gem "sinatra"` | Sinatra 本体 | 軽い Web アプリ用ライブラリ |
 | `gem "sinatra-activerecord"` | DB 用の橋渡し | Sinatra と ActiveRecord をつなぐ |
 | `gem "sqlite3"` | SQLite ドライバ | ファイル型 DB を Ruby から使う |
-| `gem "sinatra-contrib"` | おまけ機能セット | `reloader` など便利機能入り |
 
 ## ポイント解説
 - **Gemfile** は依存宣言ファイル。
@@ -70,7 +69,6 @@ bundle install --path vendor/bundle
 | sinatra | 軽量 Web フレームワーク（HTTP ルーティング、ビュー） |
 | sinatra-activerecord | Sinatra と ActiveRecord を連携させる拡張 |
 | sqlite3 | SQLite DB の Ruby バインディング |
-| sinatra-contrib | `sinatra/reloader` など便利機能を一括提供 |
 
 
 ## 動作確認
