@@ -1,13 +1,12 @@
 # Step 13: Bootstrapでモダンな見た目に改善
 
-## 目的
+## 目的と成果物
+
+### 目的
 CSSフレームワークを使って、効率的にUIを改善する
 
-## なぜBootstrapを使うのか？
-Step 12で経験した手作業との比較で、フレームワークの利点を理解する：
-- デザインの一貫性が自動的に保たれる
-- レスポンシブ対応が簡単
-- 豊富なコンポーネントがすぐに使える
+### 成果物
+views/index.erb（更新）
 
 ## 作業手順
 
@@ -27,7 +26,6 @@ cursor views/index.erb   # VS Code で開き、下記内容に更新
 </head>
 <body class="container py-4">
   <h1 class="mb-4">Todos</h1>
-  
   <div class="mb-4">
     <a href="/todos/new" class="btn btn-primary">
       <i class="bi bi-plus-circle"></i> 新規作成
@@ -36,68 +34,44 @@ cursor views/index.erb   # VS Code で開き、下記内容に更新
 
   <div class="table-responsive">
     <table class="table table-hover">
-      <thead class="table-light">
+      <% @todos.each do |todo| %>
         <tr>
-          <th>タイトル</th>
-          <th>状態</th>
-          <th>操作</th>
+          <td><%= todo.title %></td>
+          <td>
+            <span class="badge <%= todo.done ? 'bg-success' : 'bg-danger' %>">
+              <%= todo.done ? "完了" : "未完了" %>
+            </span>
+          </td>
+          <td>
+              <a href="/todos/<%= todo.id %>/edit">編集</a>
+              <form action="/todos/<%= todo.id %>" method="post" style="display: inline">
+              <input type="hidden" name="_method" value="delete">
+              <button type="submit">削除</button>
+              </form>
+          </td>
         </tr>
-      </thead>
-      <tbody>
-        <% @todos.each do |todo| %>
-          <tr>
-            <td class="align-middle"><%= todo.title %></td>
-            <td class="align-middle">
-              <span class="badge <%= todo.done ? 'bg-success' : 'bg-danger' %>">
-                <%= todo.done ? "完了" : "未完了" %>
-              </span>
-            </td>
-            <td>
-              <div class="btn-group" role="group">
-                <a href="/todos/<%= todo.id %>/edit" class="btn btn-sm btn-outline-secondary">
-                  編集
-                </a>
-                <form action="/todos/<%= todo.id %>" method="post" style="display: inline">
-                  <input type="hidden" name="_method" value="delete">
-                  <button type="submit" class="btn btn-sm btn-outline-danger">削除</button>
-                </form>
-              </div>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
+      <% end %>
     </table>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 ```
 
 ### 2. public/styles.cssの削除
 ```bash
-rm public/styles.css  # 手作りのCSSは不要になります
+  rm public/styles.css #Bootstrapのクラスしか使っていないので、手作りのCSSは不要になりました！
 ```
 
-### 3. app.rbからpublic設定を削除
-```bash
-cursor app.rb   # VS Code で開き、public設定を削除
-```
+## ポイント解説
 
-```ruby
-require "sinatra"
-require "sinatra/activerecord"
-require_relative "models/todo"
+Bootstrapには予めcssが適用されたクラスがたくさん入っています。
+このクラスを指定することで自力でCSSを書かずに手軽にレイアウトを作成できます。
+細かい修正をしたいときはCSSで調整することもできます。
 
-get "/" do
-  @todos = Todo.order(created_at: :desc)
-  erb :index
-end
-```
+### なぜBootstrapを使うのか？
 
-## 改善された点
 1. **デザインの一貫性**
-   - Bootstrapのデザインシステムにより、プロフェッショナルな見た目に
+   - Bootstrapのデザインシステムにより、プロっぽい見た目に
    - 色やスペーシングが自動的に最適化
 
 2. **レスポンシブ対応**
@@ -113,7 +87,7 @@ end
    - CSSを手書きする必要がない
    - クラス名を指定するだけで統一されたデザインに
 
-## Step 12との比較
+### Step 12との比較
 手作業で実装した機能との比較：
 
 | 機能 | Step 12（バニラCSS） | Step 13（Bootstrap） |
@@ -124,15 +98,20 @@ end
 | レスポンシブ | 未対応 | `container`と`table-responsive`で自動対応 |
 | 保守性 | CSSの知識が必要 | クラス名の知識のみで OK |
 
-## 次のステップで分かること
-レイアウトテンプレートを導入することで：
-- 共通部分の重複がなくなる
-- 全ページの見た目を一括で変更できる
-- コードがより DRY に
+## 動作確認
+- [ ] 見た目がモダンになった
+
 
 ## Commit Point 🚩
 ```bash
-git rm public/styles.css
-git add views/index.erb app.rb
+git add views/index.erb public/styles.css
 git commit -m "STEP13: improve UI with Bootstrap"
 ``` 
+
+## もっと詳しく
+- [はじめに · Bootstrap v5.3 | Bootstrap公式ドキュメント](https://getbootstrap.jp/docs/5.3/getting-started/introduction/)
+
+AIへの質問例
+```
+今回のプロジェクトで見栄えが良くなるbootstrapのクラスを5つ教えてください。定量的な推奨度と理由も併せて教えてください。
+```

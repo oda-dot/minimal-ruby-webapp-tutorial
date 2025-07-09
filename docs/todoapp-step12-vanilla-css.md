@@ -105,25 +105,6 @@ cursor views/index.erb   # VS Code で開き、下記内容に更新
 </html>
 ```
 
-### 3. app.rbの更新
-```bash
-cursor app.rb   # VS Code で開き、public設定を追加
-```
-
-```ruby
-require "sinatra"
-require "sinatra/activerecord"
-require_relative "models/todo"
-
-# 静的ファイルの提供を有効化
-set :public_folder, File.dirname(__FILE__) + '/public'
-
-get "/" do
-  @todos = Todo.order(created_at: :desc)
-  erb :index
-end
-```
-
 ## ポイント解説
 
 ### 用語解説
