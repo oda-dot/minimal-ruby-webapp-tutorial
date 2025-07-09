@@ -6,15 +6,15 @@
 プロジェクトを Git でバージョン管理し、変更履歴を残せるようにする。
 
 ### 成果物
-todo_app
+ruby-todo-app
 .git
 
 
 ## 作業
 ### 1. プロジェクトディレクトリを作成し移動
 ```bash
-mkdir ~/todo_app
-cd ~/todo_app
+mkdir ~/ruby-todo-app
+cd ~/ruby-todo-app
 ```
 
 ---

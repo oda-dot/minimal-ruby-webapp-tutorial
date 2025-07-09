@@ -53,7 +53,7 @@
 
 ## 6. ディレクトリ構成
 ```text
-todo_app/
+ruby-todo-app/
  ├─ app.rb
  ├─ models/
  │    └─ todo.rb

@@ -6,7 +6,7 @@
 
 ## ディレクトリ構成
 ```text
-todo_app/
+ruby-todo-app/
 ├── app.rb
 ├── config.ru
 ├── Gemfile
