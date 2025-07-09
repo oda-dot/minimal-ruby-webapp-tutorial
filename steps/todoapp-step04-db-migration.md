@@ -1,46 +1,48 @@
-# todoapp Step 04 DB 設定 & マイグレーション
+# 🗄️ todoapp Step 04 DB 設定 & マイグレーション
 
-## 目的と成果物
+SQLite3 に `todos` テーブルを作成し、ActiveRecord マイグレーションの流れを体験します。コードでスキーマを管理できるようになると、履歴を辿れたり、別環境へコピーしやすくなり便利です。
+
+---
+
+## 🎯 目的と成果物
 
 ### 目的
-SQLite3 に Todo テーブルを作成し、ActiveRecord マイグレーションの流れを理解する。
+- SQLite ファイルを作成し、`todos` テーブルを生成する。
+- マイグレーションが **DSL → SQL → DB** の順で適用される流れを理解する。
 
 ### 成果物
-Rakefile
-app.rb
-config
-db/development.sqlite3 （自動生成）
-db/schema.rb （自動生成）
-db/migrate
-db/migrate/XXXXXX_create_todos.rb （自動生成）
-config/database.yml
+- `config/database.yml`
+- `Rakefile`
+- `app.rb` (簡易版)
+- `db/development.sqlite3` (自動生成)
+- `db/schema.rb` (自動生成)
+- `db/migrate/XXXXXXXXXXXXXX_create_todos.rb` (自動生成)
 
-## 作業
+---
 
-### DB設定に必要なディレクトリ、ファイルを作成
+## 🚀 作業フロー
+
+### 1. ディレクトリと設定ファイルを作成する
 ```bash
 mkdir -p config db/migrate
 
 touch config/database.yml
-cursor  config/database.yml   # VS Code で開き、下記内容を貼り付けて保存
+cursor config/database.yml
 ```
-
-### database.yml 例
+`database.yml` に下記を貼り付けて保存します。
 ```yaml
 development:
   adapter: sqlite3
   database: db/development.sqlite3
 ```
 
-### Rakefile を作成 (ActiveRecord 用タスクを読み込む)
+### 2. Rakefile を用意する
 ```bash
 touch Rakefile
-cursor  Rakefile              # VS Code で開き、下記内容を貼り付けて保存
+cursor Rakefile
 ```
-
-### Rakefile 例
 ```ruby
-require 'sinatra/activerecord/rake'
+require "sinatra/activerecord/rake"
 
 namespace :db do
   task :load_config do
@@ -49,28 +51,23 @@ namespace :db do
 end
 ```
 
-### 簡易版 app.rb を作成 (DB接続設定のため)
+### 3. app.rb (簡易版) を用意する
 ```bash
 touch app.rb
-cursor app.rb                 # VS Code で開き、下記内容を貼り付けて保存
+cursor app.rb
 ```
-
-### app.rb 例 (簡易版)
 ```ruby
 require "sinatra"
 require "sinatra/activerecord"
 ```
+> 本格的なルーティングは後のステップで追加します。ここでは **DB 設定を読み込む器** として置いておきます。
 
-### マイグレーション生成
+### 4. マイグレーションファイルを生成する
 ```bash
 bundle exec rake db:create_migration NAME=create_todos
 ```
-
-このコマンドにより、db/migrate/XXXXXX_create_todos.rbが作成されます
-
-※ XXXXXX部分は自動でタイムスタンプが挿入されます
-
-### db/migrate/XXXXXX_create_todos.rb を下記内容に編集
+`db/migrate/XXXXXXXXXXXXXX_create_todos.rb` が自動生成されます。ファイルを開いて下記内容に編集します。
+※ XXXXXXXXXXXXXX部分にはタイムスタンプが挿入されます。
 
 ```ruby
 class CreateTodos < ActiveRecord::Migration[8.0]
@@ -85,78 +82,107 @@ class CreateTodos < ActiveRecord::Migration[8.0]
 end
 ```
 
-### マイグレーション実行
+### 5. マイグレーションを実行する
 ```bash
 bundle exec rake db:migrate
 ```
+- 実行ログに `CREATE TABLE` が表示され、`db/development.sqlite3` が作成されます。
 
-## ポイント解説
-- `rake db:create_migration` でテンプレートファイルを生成。
-- DSL → SQL に変換され、SQLite ファイルに適用される。
-- Rake タスクが正常動作するには app.rb での ActiveRecord 初期化が必要。
-- sinatra-activerecord は自動的に config/database.yml を読み取って DB に接続する。
+---
 
-### 用語メモ
-- **rake**: Ruby で書かれたタスク実行ツール。make の Ruby 版。
-- **マイグレーション (migration)**: スキーマ変更履歴を Ruby DSL で管理する仕組み。
-- **スキーマ (schema)**: テーブル定義 (列名・型・制約) の集合。
-- **DSL**: Domain Specific Language。特定領域に特化した記述方式。
-- **db:load_config**: Rake タスクが DB 設定を読み込むためのタスク。
-
-### database.yml を分解してみよう
-| キー | 意味 |
+## 💡 ポイント解説
+| 項目 | 内容 |
 |------|------|
-| `adapter` | どの DB を使うか指定。ここでは `sqlite3`. |
-| `database` | DB ファイルの場所。`db/development.sqlite3` が作られる |
+| マイグレーション | スキーマ変更を Ruby DSL で記述し、バージョン管理する仕組み |
+| `rake db:create_migration` | テンプレートファイルを生成する Rake タスク |
+| `db/schema.rb` | 最新スキーマを Ruby で書き出したスナップショット。テスト環境のロードに使われる |
+| `bundle exec rake db:migrate` | まだ適用していないマイグレーションを順番に実行する |
+| `ActiveRecord::Migration[8.0]` | マイグレーション DSL のバージョンを指定するクラス |
 
-### app.rb (簡易版) を分解してみよう
-- `require "sinatra"` : Sinatra 本体を読み込む。
-- `require "sinatra/activerecord"` : Sinatra と ActiveRecord を連携させる拡張を読み込む。自動的に config/database.yml を読み取る。
+### database.yml の最小構成
+| キー | 説明 |
+|------|------|
+| `adapter` | 使用する DB ドライバ (`sqlite3`, `postgresql` など) |
+| `database` | ファイルまたは接続先 DB の名前 |
 
-### Rakefile を分解してみよう
-- `require 'sinatra/activerecord/rake'` : ActiveRecord 用の Rake タスク群を読み込み。
-- `namespace :db do ... end` : DB 関連タスクをグループ化。
-- `task :load_config` : Rake タスクが app.rb を読み込んで DB 設定を取得。
-
-### マイグレーション例を分解してみよう
-- `class CreateTodos < ActiveRecord::Migration` : **テーブル変更用のクラス** を定義。
-- `def change` : ここに「どう変えるか」を書くメソッドを作る。
-- `create_table :todos do |t|` : `todos` というテーブルを新規作成。
-  - `t.string :title, null: false` : 文字列型 `title` 列、空 NG。
-  - `t.text :description` : 長い文字用の列。
-  - `t.boolean :done, default: false` : true/false 列、初期値は false。
-  - `t.timestamps` : `created_at` / `updated_at` を自動追加。
-
-### データベース生成の流れ（図解）
+### マイグレーション → DB 反映イメージ
 ```mermaid
 graph TD
-  A[Rakefile<br/>rake db:migrate] --> B[Migration ファイル<br/>db/migrate/*.rb]
+  A[Rakefile<br/>db:migrate] --> B[Migration ファイル]
   B --> C[ActiveRecord]
-  C --> D[SQLite ファイル<br/>db/development.sqlite3]
+  C --> D[SQLite3 エンジン]
+  D --> E[db/development.sqlite3]
 ```
 
-## 動作確認
-```bash
-sqlite3 db/development.sqlite3 '.schema todos'
-```
-テーブル定義が表示されれば OK。
+> **開発環境** では SQLite を、**本番環境** では PostgreSQL を使うケースが多いです。`database.yml` に環境ごと設定を書き分けることで対応できます。
 
-## Commit Point 🚩
+---
+
+## 🛠️ ファイルを分解してみよう
+
+### database.yml
+| キー | 役割 | 例 |
+|------|------|----|
+| `adapter` | 使用する DB ドライバ | `sqlite3` / `postgresql` など |
+| `database` | DB ファイルまたは接続先 | `db/development.sqlite3` |
+
+### Rakefile
+- `require "sinatra/activerecord/rake"` : ActiveRecord の Rake タスクを読み込む。
+- `namespace :db do ... end` : DB 関連タスクをまとめる名前空間。
+- `task :load_config` : `app.rb` を読み込んで DB 設定をメモリに載せる。
+
+### app.rb (簡易版)
+- `require "sinatra"` : Sinatra 本体を読み込む。
+- `require "sinatra/activerecord"` : Sinatra と ActiveRecord を連携させ、`database.yml` を自動で読み込む。
+
+### db/migrate/XXXX_create_todos.rb
+- `class CreateTodos < ActiveRecord::Migration[8.0]` : スキーマ変更用クラスを定義する。
+- `def change` : “こう変える”を宣言するメソッド。
+- `create_table :todos do |t|` : `todos` テーブルを新規作成する。
+  - `t.string :title, null: false` : 文字列型 `title` 列、空 NG。
+  - `t.text :description` : 説明文用の列。
+  - `t.boolean :done, default: false` : 完了フラグ、初期値 false。
+  - `t.timestamps` : `created_at` / `updated_at` を自動で追加する。
+
+---
+
+## ✅ 動作確認
 ```bash
-git add db/migrate config/database.yml Rakefile app.rb
+sqlite3 db/development.sqlite3 ".schema todos"
+```
+`CREATE TABLE todos (...` が出力されれば成功です。
+
+---
+
+## 🚩 Commit Point
+```bash
+git add config/database.yml Rakefile app.rb db/migrate
 git commit -m "STEP04: create todos table via migration"
 ```
 
-## 理解チェック
-- [ ] マイグレーション→テーブル作成の流れを口頭で説明できる
+---
 
-## もっと詳しく
+## 📝 理解チェック
+- [ ] `rake db:migrate` が内部で何をしているか 3 行で説明できる。
+- [ ] `db/schema.rb` とマイグレーションファイルの役割の違いを説明できる。
 
-- ActiveRecord Migrations: https://guides.rubyonrails.org/active_record_migrations.html
-- ActiveRecord マイグレーション入門: https://railsguides.jp/active_record_migrations.html
-- テーブル設計の基本（カラム型と制約）
+---
 
-AI への質問例
+## 🔗 もっと詳しく知りたいとき
+- ActiveRecord Migrations (公式): https://guides.rubyonrails.org/active_record_migrations.html
+- SQLite の利点とユースケース: https://www.sqlite.org/whentouse.html
+- テーブル設計のベストプラクティス (記事): https://zenn.dev/yuikoito/articles/db-design-basic
+- Rake 入門: https://ruby.github.io/rake/
+
+---
+
+🤔 AI に聞いてみよう 🤖
 ```
 マイグレーションって一言でいうと何をする仕組みですか？
+
+マイグレーションと seed データの違いは？
+
+`ActiveRecord::Migration[8.0]` の `[8.0]` は何を示す？
+
+マイグレーションをロールバックするコマンドと注意点は？
 ```

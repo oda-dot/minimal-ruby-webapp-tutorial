@@ -1,26 +1,37 @@
-# todoapp Step 02 Gemfile & Bundler
+# 📦 todoapp Step 02 Gemfile & Bundler
 
-## 目的と成果物
+このステップでは、必要なライブラリ (Gem) を **Gemfile** に宣言し、Bundler で一括インストールします。依存をコードで管理できるようになると、チーム開発や環境再現がスムーズになり便利です。
+
+---
+
+## 🎯 目的と成果物
 
 ### 目的
-Gemfile で必要ライブラリを宣言し、Bundler で一括インストールする。
+- Gemfile で依存ライブラリを宣言する。
+- Bundler で Gem をまとめてインストールする。
 
 ### 成果物
+- `Gemfile`
+- `Gemfile.lock` (自動生成)
+- `vendor/bundle/` 配下にインストールされた Gem 群 (自動生成)
+- `.bundle/config` (Bundler の設定ファイル、自動生成)
 
-.bundle/*　（自動生成）
-Gemfile
-Gemfile.lock（自動生成）
-vendor/bundler/*（自動生成）
+> `vendor/bundle` を `.gitignore` に追加しておくと、巨大な Gem をリポジトリへ誤ってコミットせずに済みます。
+> .gitignoreはstep10で作成しますが、任意でここで作成してもよいです。
 
-## 作業
-### 1. Gemfile を作成して VS Code で開く
+---
+
+## 🚀 作業フロー
+
+### 1. Gemfile を作成してエディタで開く
 ```bash
 touch Gemfile
-cursor Gemfile
+cursor Gemfile  # VS Code の場合は code Gemfile
 ```
-> 直後に下の「Gemfile 例」をコピーして保存してください。
 
-### Gemfile 例
+作成したファイルに、次の「Gemfile 例」をコピーして保存する。
+
+#### Gemfile 例
 ```ruby
 source "https://rubygems.org"
 
@@ -30,78 +41,113 @@ gem "rackup"
 gem "sinatra"
 gem "sinatra-activerecord"
 gem "sqlite3"
-
 ```
 
 ---
 
-### 2. 依存ライブラリをインストール
+### 2. 依存ライブラリをインストールする
 ```bash
 bundle install --path vendor/bundle
 ```
-`vendor/bundle/` に Gem がダウンロードされれば完了です。
+
+- `--path` オプションで Gem をプロジェクト内 (`vendor/bundle`) に閉じ込める。
+- 処理が完了したら `vendor/bundle/` に大量のフォルダが生成される。
+
 ---
 
+## 💡 ポイント解説
+| 項目 | 内容 |
+|----|----|
+| Gemfile | 依存を宣言するファイル。**宣言しただけ**では Gem は入らない。 |
+| Gemfile.lock | 実際にインストールした Gem とバージョンを書き出すスナップショット。環境差分を防ぐ。 |
+| Bundler | Gemfile を読み取り、依存グラフを解決して `bundle install` を実行するツール。 |
+| `vendor/bundle` | プロジェクトローカルに Gem を置く慣習的パス。複数プロジェクト間のバージョン衝突を避けられる。 |
+| `bundle exec` | Gemfile.lock に記録されたバージョンでコマンドを実行するラッパー。 |
 
-
-### Gemfile を分解してみよう
-| 行 | 役割 | 意味 |
-|----|------|------|
-| `source "https://rubygems.org"` | ここから Gem をダウンロード | Ruby 用の公式倉庫 URL |
-| `gem "sinatra"` | Sinatra 本体 | 軽い Web アプリ用ライブラリ |
-| `gem "sinatra-activerecord"` | DB 用の橋渡し | Sinatra と ActiveRecord をつなぐ |
-| `gem "sqlite3"` | SQLite ドライバ | ファイル型 DB を Ruby から使う |
-
-## ポイント解説
-- **Gemfile** は依存宣言ファイル。
-- `bundle install` は Gem の依存関係を解決し `vendor/bundle` にインストール。
-- `--path` でプロジェクトローカルに閉じ込める。
-
-### 用語メモ
-- **Gem**: Ruby のライブラリパッケージ。Python の pip に相当。
-- **依存関係 (dependency)**: ライブラリが他のライブラリを必要とする関係。解決を dependency resolution と呼ぶ。
-- **vendor/bundle**: プロジェクトローカルに Gem を置く慣習的ディレクトリ。
-- **bundle exec**: プロジェクトの Gemfile で指定したバージョンの Gem を使ってコマンドを実行する。
-
-### 依存解決の全体像（図解）
+### 依存解決イメージ
 ```mermaid
 graph TD
-  A[Gemfile<br/>（依存宣言）] --> B[bundle install<br/>（Bundler）]
-  B --> C[Gem の実体<br/>vendor/bundle 内]
+  A[Gemfile<br/>（依存宣言）] -->|bundle install| B[Bundler]
+  B --> C[Gem の実体<br/>vendor/bundle]
+  C --> D[Gemfile.lock<br/>（解決結果）]
 ```
 
-### インストールした Gem の目的
-| Gem | 役割 |
-|-----|------|
-| sinatra | 軽量 Web フレームワーク（HTTP ルーティング、ビュー） |
-| sinatra-activerecord | Sinatra と ActiveRecord を連携させる拡張 |
-| sqlite3 | SQLite DB の Ruby バインディング |
+### Gemfile の見かた
+| 行 | 意味 | 説明 |
+|----|------|-----------|
+| `source "https://rubygems.org"` | Gem を取得する公式リポジトリ | Private Gem サーバを使う場合は URL を変える |
+| `gem "sinatra"` | Sinatra 本体 | HTTP ルーティングやテンプレート表示を担当する |
+| `gem "sinatra-activerecord"` | Sinatra と ActiveRecord の橋渡し | DB 操作を簡単にする |
+| `gem "sqlite3"` | SQLite ドライバ | ファイル型 DB を Ruby から操作する |
 
+---
 
-## 動作確認
-`bundle exec ruby -e 'puts :Ruby実行準備完了！'` が `Ruby実行準備完了！` を表示すれば実行環境 OK。
+## 🛠️ ファイルを分解してみよう
 
-## Commit Point 🚩
+### Gemfile
+(※ 上記「Gemfile の見かた」参照)
+
+### Gemfile.lock
+- 実際に解決した **Gem の名前 + 正確なバージョン** を記録するファイル。
+- チーム全員が同じバージョンで開発できるようロックする。
+- 手動編集は原則しない。`bundle update` や `bundle install` が自動で書き換える。
+
+### .bundle/config
+- Bundler のローカル設定ファイル。
+- `bundle config set --local path vendor/bundle` を実行するとここに保存される。
+- プロジェクトごとに置かれるため、複数リポジトリで異なる設定を共存できる。
+
+### vendor/bundle/
+- Gem の実体を保存するフォルダ。
+- Ruby や OS 別の拡張がある Gem は `ruby/3.1.0/gems/...` のようなネスト構造になる。
+- **容量が大きい** し、Gemfileがあれば再現できるので Git には入れない (.gitignore) 。
+
+---
+
+## ✅ 動作確認
+```bash
+bundle exec ruby -e 'puts "Ruby 実行環境 OK"'
+```
+`Ruby 実行環境 OK` と表示されれば依存解決は成功している。
+
+---
+
+## 🚩 Commit Point
 ```bash
 git add Gemfile Gemfile.lock
-git commit -m "STEP02: add Gemfile and install dependencies"
+git commit -m "STEP02: add Gemfile & install dependencies"
 ```
 
-## 理解チェック
-- [ ] Gemfile と `gem install` の違いを説明できる
+> `vendor/bundle/` を追加した`.gitignore` を作成した場合は一緒にコミットする。
 
-## もっと詳しく
+---
 
-- Bundler: https://bundler.io/
-- Sinatra 入門ガイド（公式）: https://sinatrarb.com/intro.html
-- Bundler クイックスタート: https://bundler.io/v2.4/#getting-started
-- SQLite を使う理由（ブログ記事）: https://zenn.dev/
+## 📝 理解チェック
+- [ ] Gemfile と Gemfile.lock の役割の違いを説明できる。
+- [ ] `bundle install` と `gem install` の違いを説明できる。
+- [ ] `bundle exec` が必要な理由を説明できる。
 
-AI への質問例
+---
+
+## 🔗 もっと詳しく知りたいとき
+- Bundler 公式: https://bundler.io/
+- Bundler クイックスタート (5 分で体験): https://bundler.io/v2.4/#getting-started
+- Sinatra 公式イントロ: https://sinatrarb.com/intro.html
+- Gemfile ベストプラクティス (記事): https://thoughtbot.com/blog/gemfile-best-practices
+- SQLite を採用するメリット: https://www.sqlite.org/whentouse.html
+
+---
+
+🤔 AI に聞いてみよう 🤖
 ```
 Gemfile と Gemfile.lock の役割の違いを初心者向けに説明してください。
 
 bundle install --path vendor/bundle のpathオプションは必須でしょうか？
 
-bundle exec ruby -e 'puts :Ruby実行準備完了！'　はどういう意味ですか？
+bundle exec ruby -e 'puts "Ruby 実行環境 OK"'　はどういう意味ですか？
+
+Gemfile.lock が衝突したときはどう解決する？
+
+`bundle update` と `bundle install` の違いは？
+
 ``` 

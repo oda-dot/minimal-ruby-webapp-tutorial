@@ -1,23 +1,21 @@
-# Step 14: レイアウトテンプレートで共通部分を整理
+# todoapp Step 14 Layout Template で共通レイアウトを作成 🎨
 
-## 目的と成果物
-
+## 🎯目的・成果物
 ### 目的
-共通のHTMLを1箇所にまとめ、メンテナンス性を向上させる
+- 共通の HTML を 1 か所にまとめて、メンテしやすくします。
 
 ### 成果物
-app.rb（更新）
-views/index.erb（更新）
-views/layout.erb
+- `app.rb`（更新）
+- `views/index.erb`（更新）
+- `views/layout.erb`（新規）
 
-## 作業手順
+## 🚀作業フロー
 
-### 1. views/layout.erbの作成
+### 1. `views/layout.erb` を作成する
 ```bash
 touch views/layout.erb
-cursor views/layout.erb   # VS Code で開き、下記内容を貼り付けて保存
+cursor views/layout.erb   # エディタで開いて下記をペースト
 ```
-
 ```erb
 <!DOCTYPE html>
 <html>
@@ -39,15 +37,13 @@ cursor views/layout.erb   # VS Code で開き、下記内容を貼り付けて�
 </body>
 </html>
 ```
+- すべての画面で共通になる HTML をここに集約。
+- `<nav>` でナビバー追加。ロゴをクリックすれば一覧 (`/`) へジャンプ。
 
-- 全ての画面共通で必要な要素を書いています。
-- `<nav>`でナビゲーションバーを追加しました。UIがよくなります。「Todo App」部分クリックすると、一覧画面（ルートページ：`/`）に遷移します。
-
-### 2. views/index.erbの簡略化
+### 2. `views/index.erb` をミニマム化
 ```bash
-cursor views/index.erb   # VS Code で開き、下記内容に更新
+cursor views/index.erb   # 既存ファイルを以下に置き換え
 ```
-
 ```erb
 <h1 class="mb-4">Todos</h1>
 <div class="mb-4">
@@ -63,40 +59,40 @@ cursor views/index.erb   # VS Code で開き、下記内容に更新
         <td><%= todo.title %></td>
         <td>
           <span class="badge <%= todo.done ? 'bg-success' : 'bg-danger' %>">
-            <%= todo.done ? "完了" : "未完了" %>
+            <%= todo.done ? '完了' : '未完了' %>
           </span>
         </td>
         <td>
-            <a href="/todos/<%= todo.id %>/edit">編集</a>
-            <form action="/todos/<%= todo.id %>" method="post" style="display: inline">
+          <a href="/todos/<%= todo.id %>/edit">編集</a>
+          <form action="/todos/<%= todo.id %>" method="post" style="display: inline">
             <input type="hidden" name="_method" value="delete">
             <button type="submit">削除</button>
-            </form>
+          </form>
         </td>
       </tr>
     <% end %>
   </table>
 </div>
 ```
+- `<head>` や `<body>` はレイアウトに任せ、ここでは「コンテンツ」だけ残す。
 
-- `<head>`や`<body>`などを削除して簡略化されました。
-
-### 3. app.rbでタイトルを設定
+### 3. `app.rb` でタイトルをセット
 ```bash
-cursor app.rb   # VS Code で開き、@titleを設定
+cursor app.rb   # @title を設定
 ```
-
-`get "/"`に`@tile`を設定します。
-この`@title`の値が`views/layout.erb`の`@title`部分に入ってきます。
-
+`get "/"` を次のように変更
 ```ruby
 get "/" do
-  @title = 'Todo 一覧'  # ページタイトルを設定
+  @title = 'Todo 一覧'  # ページタイトル
   @todos = Todo.order(created_at: :desc)
   erb :index
 end
 ```
-## ポイント解説
+
+## 💡ポイント解説
+- **`yield`** は「ここにページ固有の HTML を差し込んで」の合図。
+- レイアウト 1 枚でデザインを **一括管理** できるので、修正などメンテナンスが楽になる。
+- `@title` を動的に渡せば、タブ名もページごとに変えられる。
 
 ### ページ表示の流れ
 - yield は「ここにページ固有の HTML を挿入する」という合図。
@@ -107,57 +103,27 @@ end
 
 ### なぜレイアウトテンプレートを使うのか？
 Step 13までの問題点：
-- 各ビューファイルでHTMLの共通部分を重複して記述
-- 全ページの共通デザインを変更する際に、全ファイルを修正する必要がある
-- コードの重複により保守性が低下
+- 各ビューファイルでHTMLの共通部分を重複して記述していた
+- 全ページの共通デザインを変更する際に、全ファイルを修正する必要があった
 
-### 改善された点
-1. **コードの重複削減**
-   - HTMLの共通部分を1箇所で管理
-   - 各ビューは本質的な内容のみに集中
+## ✅動作確認
+- [ ] 一覧ページのブラウザタブが「Todo 一覧」になっている
+- [ ] どのページでもナビバーが表示されている
 
-2. **一貫性の向上**
-   - ナビゲーションバーの追加
-   - 全ページで同じレイアウトを使用
-
-3. **保守性の向上**
-   - デザイン変更が1ファイルで完結
-   - 新規ページ作成が容易に
-
-4. **機能の追加**
-   - 動的なタイトル設定
-   - 共通のナビゲーション
-   - コピーライト表示
-
-### Step 13との比較
-手作業で実装した機能との比較：
-
-| 機能 | Step 13（個別ファイル） | Step 14（レイアウト） |
-|-----|---------------------|-------------------|
-| HTML共通部分 | 各ファイルで重複 | layout.erbで一元管理 |
-| デザイン変更 | 全ファイル修正が必要 | 1ファイルの修正で完了 |
-| ナビゲーション | なし / 個別に実装 | 共通で自動的に表示 |
-| 新規ページ追加 | HTML全体を記述 | コンテンツのみ記述 |
-
-## 動作確認
-
-- [ ] 一覧画面を開いたとき、ページタイトル（ブラウザタブに表示されるページ名）が「Todo一覧」になっている
-- [ ] 一覧画面以外でも、ナビゲーションバーが表示される
-
-## Commit Point 🚩
+## 🚩Commit Point
 ```bash
 git add views/layout.erb views/index.erb app.rb
 git commit -m "STEP14: introduce layout template"
-``` 
+```
 
-## 理解度チェック
+## 📝理解チェック
+- `yield` がどんな流れで差し込まれるかを説明できる
 
-- [ ] ページ表示の流れを説明できる
+## 🔗もっと詳しく知りたいとき
+- Sinatra 公式ドキュメント: Layouts & Rendering
+- Bootstrap Navbar リファレンス
 
-## もっと詳しく
-- 
-
-AIへの質問例
+🤔 AI に聞いてみよう 🤖
 ```
 yieldと書くだけで、ページごとに適切なviewが読み込まれる仕組みを詳しく教えてください。
 ```

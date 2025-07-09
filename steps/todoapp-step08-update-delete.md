@@ -1,29 +1,33 @@
-# todoapp Step 08 UPDATE & DELETE 機能
+# 🔄 todoapp Step 08 UPDATE & DELETE 機能
 
-## 目的と成果物
+既存 Todo を編集・削除できるようにするステップです。ここでは `Rack::MethodOverride` を活用してフォームから PATCH / DELETE メソッドをエミュレートします。
+
+---
+
+## 🎯 目的と成果物
 
 ### 目的
-既存 Todo を編集・削除できるようにし、`Rack::MethodOverride` の仕組みを理解する。
+- Todo を更新 (PATCH)・削除 (DELETE) できるようにする。
+- `Rack::MethodOverride` でフォーム制限を回避する仕組みを理解する。
 
 ### 成果物
-views/edit.erb
-views/index.erb (更新)
-app.rb (更新)
+- `views/edit.erb`
+- `views/index.erb` (更新)
+- `app.rb` (更新)
 
-## 作業
+---
 
-### 1. app.rb に UPDATE & DELETE ルートを追記
+## 🚀 作業フロー
+
+### 1. app.rb に UPDATE & DELETE ルートを追記する
 ```bash
-cursor app.rb   # ファイルを開き、コード例を貼り付けて保存
+cursor app.rb
 ```
-
-### app.rb 追記例
 ```ruby
-# Rack::MethodOverride を有効化（sinatraのrequire文の後に記述）
+# --- ここを追記 ---
+# Rack::MethodOverride を有効化（require の後あたり）
 enable :method_override
 use Rack::MethodOverride
-
-# get～post "/todos" do（省略）
 
 get "/todos/:id/edit" do
   @todo = Todo.find(params[:id])
@@ -45,31 +49,31 @@ delete "/todos/:id" do
 end
 ```
 
-### 2. edit.erb ビューを新規作成
+### 2. edit.erb ビューを作成する
 ```bash
 touch views/edit.erb
-cursor views/edit.erb   # コード例を保存
+cursor views/edit.erb
 ```
-
-### views/edit.erb 例
 ```erb
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>Todo編集</title>
 </head>
 <body>
   <h1>Todo編集</h1>
   <form action="/todos/<%= @todo.id %>" method="post">
-    <input type="hidden" name="_method" value="patch">
+    <input type="hidden" name="_method" value="patch" />
     <div>
       <label for="title">タイトル</label>
-      <input type="text" name="todo[title]" id="title" value="<%= @todo.title %>">
+      <input type="text" name="todo[title]" id="title" value="<%= @todo.title %>" />
     </div>
     <div>
-      <label>完了</label>
+      <label>
         <input type="checkbox" name="todo[done]" <%= "checked" if @todo.done %> />
+        完了
+      </label>
     </div>
     <div>
       <button type="submit">更新</button>
@@ -80,83 +84,79 @@ cursor views/edit.erb   # コード例を保存
 </html>
 ```
 
-### 3. index.erb を更新し Edit / Delete ボタンを追加
+### 3. index.erb に Edit / Delete ボタンを追加する
 ```bash
-cursor views/index.erb  # <tr>~</tr>の部分をコード例に置き換えて保存
+cursor views/index.erb
 ```
-
-### views/index.erb (更新)
+`<tr>` 内を次のように差し替える。
 ```erb
 <tr>
   <td><%= todo.title %></td>
   <td><%= todo.done ? "完了" : "未完了" %></td>
   <td>
     <a href="/todos/<%= todo.id %>/edit">編集</a>
-    <form action="/todos/<%= todo.id %>" method="post" style="display: inline">
-      <input type="hidden" name="_method" value="delete">
+    <form action="/todos/<%= todo.id %>" method="post" style="display:inline">
+      <input type="hidden" name="_method" value="delete" />
       <button type="submit">削除</button>
     </form>
   </td>
 </tr>
 ```
 
-## ポイント解説
-- HTML フォームは GET/POST しか送れない → hidden `_method` で `patch/delete` をエミュレート。
-- `Rack::MethodOverride` がリクエスト変換を担当。
+---
 
-### 用語メモ
-- **PATCH / DELETE**: HTTP メソッド。リソースの部分更新・削除を表す。
-- **Rack::MethodOverride**: hidden `_method` パラメータなどをもとに HTTP メソッドを書き換える Rack ミドルウェア。
+## 💡 ポイント解説
+| 項目 | 内容 |
+|------|------|
+| HTML フォーム | GET / POST しか送れないため hidden `_method` で PATCH / DELETE を指示する |
+| `Rack::MethodOverride` | hidden フィールドや HTTP ヘッダを見てリクエストメソッドを書き換えるミドルウェア |
+| `enable :method_override` | Sinatra で上記ミドルウェアを有効にするスイッチ |
 
 ### app.rb 追記を分解してみよう
-- `enable :method_override` : hidden フィールド `_method` を有効にするスイッチ。
-- `get "/todos/:id/edit"` : id 付き URL で編集フォーム表示。
-- `patch "/todos/:id"` : 更新。
-- `delete "/todos/:id"` : 削除。
+- `get "/todos/:id/edit"` : 編集フォームを表示。
+- `patch "/todos/:id"` : 更新処理。
+- `delete "/todos/:id"` : 削除処理。
 
 ### views/edit.erb を分解してみよう
-- `<input type="hidden" name="_method" value="patch" />` : 本当は 
-PATCH を送りたい合図。
-- チェックボックス `todo[done]` : true/false を DB の boolean に保
-存。 
+- `<input type="hidden" name="_method" value="patch" />` : 本当は PATCH を送りたい合図。
+- チェックボックスの `checked` 属性で完了状態を反映する。
 
-### 既存データの表示
-- `value="<%= @todo.title %>"` で現在の値を表示
-- `<%= @todo.done %>` で状態を反映
+---
 
-### 動作確認のポイント
-1. [ ] 編集リンクをクリックして現在の値が表示される
-2. [ ] 値を変更して更新ボタンを押すと反映される
-3. [ ] 削除ボタンを押すとレコードが消える
-4. [ ] タイトルを空にして更新するとエラーになる
+## ✅ 動作確認
+1. 一覧ページの「編集」をクリックしてフォームに現在の値が入っているか確認する。
+2. タイトルを変更し「更新」→ 一覧に反映される。
+3. 「削除」ボタンを押す → レコードが消える。
 
+---
 
-## 動作確認
-編集→保存で一覧が更新される。Delete ボタンで行が消える。
-
-## Commit Point 🚩
+## 🚩 Commit Point
 ```bash
 git add app.rb views/edit.erb views/index.erb
 git commit -m "STEP08: add update & delete actions with method_override"
 ```
 
-## 理解チェック
-- [ ] `Rack::MethodOverride` の役割を説明できる
-- [ ] HTTPメソッドの使い分けを説明できる
-- [ ] 異なる種類のパラメータを説明できる
-- [ ] フォームの再利用方法を説明できる
+---
 
-## もっと詳しく
+## 📝 理解チェック
+- [ ] `Rack::MethodOverride` の役割を説明できる。
+- [ ] PATCH / DELETE を hidden フィールドで送る理由を説明できる。
+- [ ] フォームの再利用テクニックを説明できる。
 
-- Rack: https://rack.github.io/
-- PATCH / DELETE が必要な理由（CRUD 完成）
-- `method_override` ミドルウェアの役割を図解
+---
 
-AI への質問例
+## 🔗 もっと詳しく知りたいとき
+- Rack ミドルウェア入門: https://rack.github.io/
+- PATCH / DELETE が必要な理由 (CRUD 完成): https://developer.mozilla.org/ja/docs/Web/HTTP/Methods
+- method_override の実装コードを読む: https://github.com/rack/rack/blob/main/lib/rack/method_override.rb
+
+---
+
+🤔 AI に聞いてみよう 🤖
 ```
 HTML フォームが GET と POST しか送れないのはなぜですか？
 
 削除する前に確認ダイアログを表示するにはどうすればいいですか？
 
-Rack::MethodOverrideの有効化をsinatraのrequire文の後に記述するのはなぜですか？
+`enable :method_override` を require の後に書くべき理由は？
 ```
