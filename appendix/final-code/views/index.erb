@@ -1,0 +1,28 @@
+<h1 class="mb-4">Todos</h1>
+<div class="mb-4">
+  <a href="/todos/new" class="btn btn-primary">
+    <i class="bi bi-plus-circle"></i> 新規作成
+  </a>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-hover">
+    <% @todos.each do |todo| %>
+      <tr>
+        <td><%= todo.title %></td>
+        <td>
+          <span class="badge <%= todo.done ? 'bg-success' : 'bg-danger' %>">
+            <%= todo.done ? "完了" : "未完了" %>
+          </span>
+        </td>
+        <td>
+            <a href="/todos/<%= todo.id %>/edit">編集</a>
+            <form action="/todos/<%= todo.id %>" method="post" style="display: inline">
+            <input type="hidden" name="_method" value="delete">
+            <button type="submit">削除</button>
+            </form>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>

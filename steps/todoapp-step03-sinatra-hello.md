@@ -6,10 +6,29 @@
 Sinatra が起動し、ブラウザに文字列を表示できることを確認する。
 
 ### 成果物
+app.rb  
 config.ru
 
 ## 作業
-### 1. config.ru を作成して VS Code で開く
+### 1. app.rb を作成して VS Code で開く
+```bash
+touch app.rb
+cursor app.rb
+```
+> 以下の「app.rb 例」をコピーして保存。
+
+### app.rb 例
+```ruby
+require "sinatra"
+
+get "/" do
+  "Hello Sinatra!"
+end
+```
+
+---
+
+### 2. config.ru を作成して VS Code で開く
 ```bash
 touch config.ru
 cursor config.ru
@@ -18,13 +37,13 @@ cursor config.ru
 
 ### config.ru 例
 ```ruby
-require "sinatra"
-run ->(env) { [200, {"content-type" => "text/plain"}, ["Hello Sinatra !"]] }
+require_relative "./app"
+run Sinatra::Application
 ```
 
 ---
 
-### 2. サーバーを起動
+### 3. サーバーを起動
 ```bash
 bundle exec rackup -p 4567
 ```
@@ -44,13 +63,9 @@ bundle exec rackup -p 4567
 - **ポート (port)**: ネットワークでプロセスを識別する番号。本手順では 4567 を使用。
 
 ### config.ru を分解してみよう
-- `require "sinatra"` : Sinatra ライブラリを読み込む合図。
-- `run ->(env) { ... }` : Rack に "このブロックを Web アプリとして動かして" と渡す。
-  - `env` : リクエスト情報が入ったハッシュ。
-  - `[200, {"content-type" => "text/plain"}, ["Hello Sinatra !"]]` : **配列 3 つセット** が Rack の取り決め。
-    - `200` : 成功を示す番号。
-    - `content-type` : ブラウザへ返すデータ種別。ここではプレーンテキスト。
-    - `body` : 表示文字列を配列で包む。
+- `require_relative "./app"` : Sinatra アプリ (app.rb) を読み込む。
+- `run Sinatra::Application` : Sinatra が生成した Rack アプリを Rack に渡す。
+- `Sinatra::Application` は Sinatra が自動生成する Rack アプリケーションクラス。
 
 ## 動作確認
 ターミナルにアクセスログが流れ、ブラウザで `http://localhost:4567` が表示される
@@ -58,7 +73,7 @@ bundle exec rackup -p 4567
 
 ## Commit Point 🚩
 ```bash
-git add config.ru
+git add app.rb config.ru
 git commit -m "STEP03: boot hello sinatra via rackup"
 ```
 

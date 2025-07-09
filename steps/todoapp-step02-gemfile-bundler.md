@@ -63,6 +63,13 @@ bundle install --path vendor/bundle
 - **vendor/bundle**: プロジェクトローカルに Gem を置く慣習的ディレクトリ。
 - **bundle exec**: プロジェクトの Gemfile で指定したバージョンの Gem を使ってコマンドを実行する。
 
+### 依存解決の全体像（図解）
+```mermaid
+graph TD
+  A[Gemfile<br/>（依存宣言）] --> B[bundle install<br/>（Bundler）]
+  B --> C[Gem の実体<br/>vendor/bundle 内]
+```
+
 ### インストールした Gem の目的
 | Gem | 役割 |
 |-----|------|

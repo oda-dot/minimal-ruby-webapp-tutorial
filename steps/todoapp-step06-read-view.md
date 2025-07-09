@@ -202,10 +202,8 @@ git commit -m "STEP06: list todos with erb view"
 
 - Sinatra Views: https://sinatrarb.com/intro.html#Views%20/%20Templates
 - ERB 基本文法チートシート
-- Sinatra で layout.erb を使う方法
-- Bootstrap テーブルのカスタマイズ例
 
 AI への質問例
 ```
-layout.erb を使うと複数ページでどんなメリットがありますか？
+
 ```

@@ -1,0 +1,10 @@
+## bundler関連ファイル（環境依存のため除外）:
+/.bundle/
+/vendor/bundle
+
+## データベース関連ファイル（データベースのバックアップなどを含むため除外）:
+/db/*.sqlite3
+*.sqlite3*
+*.db
+*.db-shm
+*.db-wal

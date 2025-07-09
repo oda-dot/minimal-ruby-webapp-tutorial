@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>新規Todo作成</title>
+</head>
+<body>
+  <h1>新規Todo作成</h1>
+  <form action="/todos" method="post">
+    <div>
+      <label for="title">タイトル</label>
+      <input type="text" name="todo[title]" id="title">
+    </div>
+    <div>
+      <label>
+        <input type="checkbox" name="todo[done]">
+        完了
+      </label>
+    </div>
+    <div>
+      <button type="submit">作成</button>
+      <a href="/">戻る</a>
+    </div>
+  </form>
+</body>
+</html>

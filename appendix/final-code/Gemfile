@@ -1,0 +1,9 @@
+source "https://rubygems.org"
+
+gem "puma"
+gem "rackup"
+gem "rake"
+gem "rerun"
+gem "sinatra"
+gem "sinatra-activerecord"
+gem "sqlite3"

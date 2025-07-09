@@ -70,5 +70,7 @@ git commit -m "STEP05: implement Todo model with validation"
 AI への質問例
 ```
 `presence: true` 以外でよく使うバリデーションを 3 つ教えてください。
+
+ActiveRecord の代表的で基本的なバリデーション例を教えてください。
 ```
 

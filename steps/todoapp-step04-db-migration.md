@@ -68,6 +68,8 @@ bundle exec rake db:create_migration NAME=create_todos
 
 このコマンドにより、db/migrate/XXXXXX_create_todos.rbが作成されます
 
+※ XXXXXX部分は自動でタイムスタンプが挿入されます
+
 ### db/migrate/XXXXXX_create_todos.rb を下記内容に編集
 
 ```ruby
@@ -124,6 +126,14 @@ bundle exec rake db:migrate
   - `t.text :description` : 長い文字用の列。
   - `t.boolean :done, default: false` : true/false 列、初期値は false。
   - `t.timestamps` : `created_at` / `updated_at` を自動追加。
+
+### データベース生成の流れ（図解）
+```mermaid
+graph TD
+  A[Rakefile<br/>rake db:migrate] --> B[Migration ファイル<br/>db/migrate/*.rb]
+  B --> C[ActiveRecord]
+  C --> D[SQLite ファイル<br/>db/development.sqlite3]
+```
 
 ## 動作確認
 ```bash
