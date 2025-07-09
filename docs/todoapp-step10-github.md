@@ -62,6 +62,11 @@ cursor .gitignore
 
 ## データベース関連ファイル（データベースのバックアップなどを含むため除外）:
 /db/*.sqlite3
+*.sqlite3*
+*.db
+*.db-shm
+*.db-wal
+
 ```
 
 もう一度現状のgitの状態を見てみましょう。

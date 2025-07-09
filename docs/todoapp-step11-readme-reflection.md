@@ -35,7 +35,7 @@ cursor README.md
 ## Commit Point 🚩
 ```bash
 git add README.md
-git commit -m "STEP11: create README "
+git commit -m "STEP11: create README"
 git push
 ```
 

@@ -1,12 +1,12 @@
 # Step 12: バニラCSSでスタイリング
 
-## 目的
-HTMLの見た目を改善し、CSSの基本を学ぶ
+## 目的と成果物
 
-## なぜバニラCSSから始めるのか？
-- CSSの基本概念を理解できる
-- スタイリングの仕組みを体験的に学べる
-- 後のフレームワーク導入で感じる便利さの土台になる
+### 目的
+- HTMLの見た目を改善し、CSSの基本を学ぶ
+
+### 成果物
+public/styles.css
 
 ## 作業手順
 
@@ -81,7 +81,7 @@ cursor views/index.erb   # VS Code で開き、下記内容に更新
 </head>
 <body>
   <h1>Todos</h1>
-  <a href="/todos/new" class="new-link">新規作成</a>
+  <a href="/todos/new">新規作成</a>
   <table>
     <% @todos.each do |todo| %>
       <tr>
@@ -90,6 +90,13 @@ cursor views/index.erb   # VS Code で開き、下記内容に更新
           <span class="status <%= todo.done ? 'status-done' : 'status-undone' %>">
             <%= todo.done ? "完了" : "未完了" %>
           </span>
+        </td>
+        <td>
+            <a href="/todos/<%= todo.id %>/edit">編集</a>
+            <form action="/todos/<%= todo.id %>" method="post" style="display: inline">
+            <input type="hidden" name="_method" value="delete">
+            <button type="submit">削除</button>
+            </form>
         </td>
       </tr>
     <% end %>
@@ -117,21 +124,34 @@ get "/" do
 end
 ```
 
-## 学んだこと
-- CSSセレクタの使い方
-- ボックスモデル（margin, padding, border）
-- 色とコントラスト
-- レイアウトの基本（中央寄せ、幅の設定）
-- クラスによるスタイル分岐
+## ポイント解説
 
-## 次のステップで分かること
-このステップで経験した手作業が、フレームワークでいかに簡単になるかを体験します：
-- 手作業で書いたボタンスタイルが、クラス1つで実現できる
-- 配色やデザインの一貫性が自動的に保たれる
-- レスポンシブ対応が簡単になる
+### 用語解説
+- バニラ
+
+
+## 動作確認
+- [ ] 画面のレイアウトが反映された
 
 ## Commit Point 🚩
 ```bash
 git add public/styles.css app.rb views/index.erb
 git commit -m "STEP12: add vanilla CSS styling"
 ``` 
+
+## 理解チェック
+- [ ] `styles.css`に新規作成リンクのためのレイアウトが定義されていますが、まだ画面に反映されていないはずです。このレイアウトを画面に反映させるためにはどうすればよいでしょうか。正しく反映出来たらコミットしてください。
+
+## もっと詳しく
+- CSSセレクタの使い方
+- ボックスモデル（margin, padding, border）
+- 色とコントラスト
+- レイアウトの基本（中央寄せ、幅の設定）
+- クラスによるスタイル分岐
+
+AI への質問例
+```
+border-radiusとは何ですか？
+
+cssでの色の指定方法にはどのようなものがありますか？
+```
